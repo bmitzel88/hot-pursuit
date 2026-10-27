@@ -31,6 +31,13 @@ static constexpr int SCORE_Y = -70;
 static constexpr int HIGH_SCORE_X = -70;
 static constexpr int HIGH_SCORE_Y = -70;
 
+// Starting location
+static constexpr int START_X = 44;
+static constexpr int START_Y = 22;
+
+// Player speed
+static constexpr int PLAYER_SPEED = 1.5;
+
 /**
  * Creates a rectangle centered at a sprite's location with a given size.
  * sprite the sprite to center the box around
@@ -100,6 +107,10 @@ class ScoreDisplay {
 
 class Player {
     public:
+        bn::sprite_ptr sprite; // Sprite Initializer
+        bn::fixed speed; // The speed of the player
+        bn::size size; // The width and height of the sprite
+        bn::rect bounding_box; // The rectangle around the sprite for checking collision
         /**
          * Update the position and bounding box of the player based on d-pad movement.
          */
@@ -115,11 +126,13 @@ class Player {
             bounding_box = create_bounding_box(sprite, size);
         }
 
-        // Create the sprite. This will be moved to a constructor
-        bn::sprite_ptr sprite = bn::sprite_items::dot.create_sprite();
-        bn::fixed speed; // The speed of the player
-        bn::size size; // The width and height of the sprite
-        bn::rect bounding_box; // The rectangle around the sprite for checking collision
+        Player(bn::fixed x_start, bn::fixed y_start) : 
+            sprite(bn::sprite_items::dot.create_sprite(x_start, y_start)),
+            speed(PLAYER_SPEED),
+            size(PLAYER_SIZE),
+            bounding_box(create_bounding_box(sprite, size)) {
+
+        }
 };
 
 int main() {
@@ -130,12 +143,8 @@ int main() {
 
     // Create a player and initialize it
     // TODO: we will move the initialization logic to a constructor.
-    Player player = Player();
-    player.sprite.set_x(44);
-    player.sprite.set_y(22);
-    player.speed = 1.5;
-    player.size = PLAYER_SIZE;
-    player.bounding_box = create_bounding_box(player.sprite, player.size);
+    Player player = Player(START_X, START_Y);
+    
 
     bn::sprite_ptr enemy_sprite = bn::sprite_items::square.create_sprite(-30, 22);
     bn::rect enemy_bounding_box = create_bounding_box(enemy_sprite, ENEMY_SIZE);
