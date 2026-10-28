@@ -22,6 +22,7 @@ static constexpr int MAX_X = bn::display::width() / 2;
 
 // Number of characters required to show two of the longest numer possible in an int (-2147483647)
 static constexpr int MAX_SCORE_CHARS = 22;
+static constexpr int MAX_ENEMIES = 3;
 
 // Score location
 static constexpr int SCORE_X = 70;
@@ -226,6 +227,8 @@ int main()
 
     while (true)
     {
+
+        bn::vector<Enemy, MAX_ENEMIES> enemies = {};
         player.update();
         enemy.update();
 
