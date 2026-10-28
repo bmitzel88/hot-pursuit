@@ -39,8 +39,8 @@ static constexpr int E_START_X = 0;
 static constexpr int E_START_Y = 0;
 
 // Player speed
-static constexpr int PLAYER_SPEED = 2;
-static constexpr int ENEMY_SPEED = 1;
+static constexpr double PLAYER_SPEED = 1.5;
+static constexpr double ENEMY_SPEED = 1;
 
 /**
  * Creates a rectangle centered at a sprite's location with a given size.
