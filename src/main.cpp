@@ -218,6 +218,8 @@ int main()
     // player.sprite.x();
 
     Enemy enemy = Enemy(E_START_X, E_START_Y, player);
+    Enemy enemy = Enemy(140, 30, player);
+    Enemy enemy = Enemy(-120, -90, player);
 
     // bn::sprite_ptr enemy_sprite = bn::sprite_items::square.create_sprite(-30, 22);
     // bn::rect enemy_bounding_box = create_bounding_box(enemy_sprite, ENEMY_SIZE);
