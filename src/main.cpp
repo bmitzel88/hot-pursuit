@@ -218,9 +218,11 @@ int main()
     Player player = Player(START_X, START_Y);
     // player.sprite.x();
 
+    bn::vector<Enemy, MAX_ENEMIES> enemies = {};
+
     Enemy enemy = Enemy(E_START_X, E_START_Y, player);
-    Enemy enemy1 = Enemy(140, 30, player);
-    Enemy enemy2 = Enemy(-120, -90, player);
+    Enemy enemy1 = Enemy(E_START_X, E_START_Y, player);
+    Enemy enemy2 = Enemy(E_START_X, E_START_Y, player);
 
     // bn::sprite_ptr enemy_sprite = bn::sprite_items::square.create_sprite(-30, 22);
     // bn::rect enemy_bounding_box = create_bounding_box(enemy_sprite, ENEMY_SIZE);
@@ -228,23 +230,27 @@ int main()
     while (true)
     {
 
-        bn::vector<Enemy, MAX_ENEMIES> enemies = {};
-        enemies.push_back(enemy);
-        enemies.push_back(enemy1);
-        enemies.push_back(enemy2);
+        if (enemies.size() < enemies.max_size())
+        {
+            enemies.push_back(Enemy(E_START_X, E_START_Y, player));
+        }
+
+        for (Enemy &e : enemies)
+        {
+            // Reset the current score and player position if the player collides with any enemy
+            if (e.bounding_box.intersects(player.bounding_box))
+            {
+                scoreDisplay.resetScore();
+                player.sprite.set_x(44);
+                player.sprite.set_y(22);
+                e.sprite.set_x(E_START_X);
+                e.sprite.set_y(E_START_Y);
+            }
+
+            e.update();
+        }
 
         player.update();
-        enemy.update();
-
-        // Reset the current score and player position if the player collides with enemy
-        if (enemy.bounding_box.intersects(player.bounding_box))
-        {
-            scoreDisplay.resetScore();
-            player.sprite.set_x(44);
-            player.sprite.set_y(22);
-            enemy.sprite.set_x(E_START_X);
-            enemy.sprite.set_y(E_START_Y);
-        }
 
         // Update the scores and disaply them
         scoreDisplay.update();
