@@ -39,8 +39,8 @@ static constexpr int E_START_X = 0;
 static constexpr int E_START_Y = 0;
 
 // Player speed
-static constexpr int PLAYER_SPEED = 1.5;
-static constexpr int ENEMY_SPEED = 1.5;
+static constexpr int PLAYER_SPEED = 2;
+static constexpr int ENEMY_SPEED = 1;
 
 /**
  * Creates a rectangle centered at a sprite's location with a given size.
@@ -192,11 +192,13 @@ public:
         {
             sprite.set_y(enemy_y - speed);
         }
+
+        bounding_box = create_bounding_box(sprite, size);
     }
 
     Enemy(bn::fixed x_start, bn::fixed y_start, Player &player_ref) : sprite(bn::sprite_items::square.create_sprite(x_start, y_start)),
                                                                       speed(ENEMY_SPEED),
-                                                                      size(PLAYER_SIZE),
+                                                                      size(ENEMY_SIZE),
                                                                       bounding_box(create_bounding_box(sprite, size)),
                                                                       player(player_ref)
     {
