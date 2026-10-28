@@ -35,8 +35,12 @@ static constexpr int HIGH_SCORE_Y = -70;
 static constexpr int START_X = 44;
 static constexpr int START_Y = 22;
 
+static constexpr int E_START_X = 0;
+static constexpr int E_START_Y = 0;
+
 // Player speed
 static constexpr int PLAYER_SPEED = 1.5;
+static constexpr int ENEMY_SPEED = 1.5;
 
 /**
  * Creates a rectangle centered at a sprite's location with a given size.
@@ -151,6 +155,54 @@ public:
     }
 };
 
+class Enemy
+{
+public:
+    bn::sprite_ptr sprite; // Sprite Initializer
+    bn::fixed speed;       // The speed of the enemy
+    bn::size size;         // The width and height of the sprite
+    bn::rect bounding_box; // The rectangle around the sprite for checking collision
+    Player &player;
+
+    void update()
+    {
+
+        bn::fixed player_x = player.sprite.x();
+        bn::fixed player_y = player.sprite.y();
+
+        bn::fixed enemy_x = sprite.x();
+        bn::fixed enemy_y = sprite.y();
+
+        if (player_x > enemy_x)
+        {
+            sprite.set_x(enemy_x + speed);
+        }
+
+        if (player_x < enemy_x)
+        {
+            sprite.set_x(enemy_x - speed);
+        }
+
+        if (player_y > enemy_y)
+        {
+            sprite.set_y(enemy_y + speed);
+        }
+
+        if (player_y < enemy_y)
+        {
+            sprite.set_y(enemy_y - speed);
+        }
+    }
+
+    Enemy(bn::fixed x_start, bn::fixed y_start, Player &player_ref) : sprite(bn::sprite_items::square.create_sprite(x_start, y_start)),
+                                                                      speed(ENEMY_SPEED),
+                                                                      size(PLAYER_SIZE),
+                                                                      bounding_box(create_bounding_box(sprite, size)),
+                                                                      player(player_ref)
+    {
+    }
+};
+
 int main()
 {
     bn::core::init();
@@ -161,20 +213,26 @@ int main()
     // Create a player and initialize it
     // TODO: we will move the initialization logic to a constructor.
     Player player = Player(START_X, START_Y);
+    // player.sprite.x();
 
-    bn::sprite_ptr enemy_sprite = bn::sprite_items::square.create_sprite(-30, 22);
-    bn::rect enemy_bounding_box = create_bounding_box(enemy_sprite, ENEMY_SIZE);
+    Enemy enemy = Enemy(E_START_X, E_START_Y, player);
+
+    // bn::sprite_ptr enemy_sprite = bn::sprite_items::square.create_sprite(-30, 22);
+    // bn::rect enemy_bounding_box = create_bounding_box(enemy_sprite, ENEMY_SIZE);
 
     while (true)
     {
         player.update();
+        enemy.update();
 
         // Reset the current score and player position if the player collides with enemy
-        if (enemy_bounding_box.intersects(player.bounding_box))
+        if (enemy.bounding_box.intersects(player.bounding_box))
         {
             scoreDisplay.resetScore();
             player.sprite.set_x(44);
             player.sprite.set_y(22);
+            enemy.sprite.set_x(E_START_X);
+            enemy.sprite.set_y(E_START_Y);
         }
 
         // Update the scores and disaply them
