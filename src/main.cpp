@@ -221,6 +221,9 @@ int main()
     while (true)
     {
 
+        if (enemies.size() == 0){
+            enemies.push_back(Enemy(E_START_X, E_START_Y, player));
+        }
         if (scoreDisplay.score % 100 == 0 && enemies.size() < enemies.max_size())
         {
             enemies.push_back(Enemy(E_START_X, E_START_Y, player));
@@ -234,8 +237,8 @@ int main()
                 scoreDisplay.resetScore();
                 player.sprite.set_x(44);
                 player.sprite.set_y(22);
-                e.sprite.set_x(E_START_X);
-                e.sprite.set_y(E_START_Y);
+                enemies.clear();
+                break;
             }
 
             e.update();
