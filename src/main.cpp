@@ -221,7 +221,7 @@ int main()
     while (true)
     {
 
-        if (scoreDisplay.score % 100 == 1 && enemies.max_size() < 3)
+        if (scoreDisplay.score % 100 == 0 && enemies.size() < enemies.max_size())
         {
             enemies.push_back(Enemy(E_START_X, E_START_Y, player));
         }
