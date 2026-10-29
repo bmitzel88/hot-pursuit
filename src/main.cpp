@@ -214,23 +214,14 @@ int main()
     ScoreDisplay scoreDisplay = ScoreDisplay();
 
     // Create a player and initialize it
-    // TODO: we will move the initialization logic to a constructor.
     Player player = Player(START_X, START_Y);
-    // player.sprite.x();
 
     bn::vector<Enemy, MAX_ENEMIES> enemies = {};
-
-    Enemy enemy = Enemy(E_START_X, E_START_Y, player);
-    Enemy enemy1 = Enemy(E_START_X, E_START_Y, player);
-    Enemy enemy2 = Enemy(E_START_X, E_START_Y, player);
-
-    // bn::sprite_ptr enemy_sprite = bn::sprite_items::square.create_sprite(-30, 22);
-    // bn::rect enemy_bounding_box = create_bounding_box(enemy_sprite, ENEMY_SIZE);
 
     while (true)
     {
 
-        if (enemies.size() < enemies.max_size())
+        if (scoreDisplay.score % 100 == 1 && enemies.max_size() < 3)
         {
             enemies.push_back(Enemy(E_START_X, E_START_Y, player));
         }
